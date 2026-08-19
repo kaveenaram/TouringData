@@ -1,1 +1,0 @@
-# translation of unicode for cities and countries for ease at front end

@@ -1,0 +1,1 @@
+Touring Data only works for artists and their top 50 cities globally.

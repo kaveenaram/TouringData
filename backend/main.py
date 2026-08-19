@@ -1,5 +1,4 @@
 # all methods in main are to allow front end to access the backend and get data from the soundcharts api
-from api import sc
 
 def dashboard():
     # dashboard calls all needed methods for info
@@ -16,3 +15,5 @@ def dashboard():
     # if artist = None: "Try Again" --> searchMethod
     # else artist_uuid = artist["uuid"] 
     # now you would use this uuid to access the rest of the info through the artist.py methods
+
+    # how to mock api calls in python
