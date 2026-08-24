@@ -1,4 +1,6 @@
-flask
-flask_cors
+Flask
+flask-cors
 soundcharts
-sqlalchemy
+Flask-SQLAlchemy
+python-dotenv
+requests

@@ -1,10 +1,12 @@
 from backend import db
 
+# update later based on new ticketmaster api
+
 class Venue(db.Model):
     venue_uuid = db.Column(db.String(200), primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    cityName = db.Column(db.String(200), db.ForeignKey("City.cityName"))
-    countryCode = db.Column(db.String(200), db.ForeignKey("Country.countryCode"))
+    city_id = db.Column(db.Integer, db.ForeignKey("city.id"))
+    country_code = db.Column(db.String(10), db.ForeignKey("country.country_code"))
     capacity = db.Column(db.String(200), nullable=False)
     imageUrl = db.Column(db.String(200), nullable=True)
     type = db.Column(db.String(200), nullable=True)
