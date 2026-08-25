@@ -22,12 +22,16 @@ class Location_Service:
 
         return country
 
-    def setCity(city_name: str, country_code: str):
+    def setCity(cityKey: str, city_name: str, country_code: str):
 
-        city = City.query.filter_by(city_name=city_name, country_code=country_code).first()
+        city = City.query.filter_by(
+            cityKey=cityKey,
+            city_name=city_name,
+            country_code=country_code,
+        ).first()
 
         if city is None:
-            city = City(
+            city = City(cityKey=cityKey,
                 city_name=city_name,
                 country_code=country_code
             )

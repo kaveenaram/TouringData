@@ -6,7 +6,7 @@ class Country(db.Model):
 
 
 class City(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    cityKey = db.Column(db.String(200), primary_key=True)
     city_name = db.Column(db.String(200), nullable=False)
     country_code = db.Column(
         db.String(10),

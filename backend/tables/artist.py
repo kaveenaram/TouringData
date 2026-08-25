@@ -12,11 +12,11 @@ class Artist(db.Model):
     observed_at = db.Column(
             db.DateTime(timezone=True),
             nullable=False,
-            default=lambda: datetime.now(datetime.timezone.utc),
+            default=lambda: datetime.now(timezone.utc),
         )
     
     fetched_at = db.Column(
         db.DateTime(timezone=True),
         nullable=False,
-        default=lambda: datetime.now(datetime.timezone.utc),
+        default=lambda: datetime.now(timezone.utc),
     )

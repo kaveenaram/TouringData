@@ -10,9 +10,9 @@ class Artist_Audience(db.Model):
         index=True,
     )
 
-    city_id = db.Column(
-        db.Integer,
-        db.ForeignKey("city.id"),
+    cityKey = db.Column(
+        db.String(200),
+        db.ForeignKey("city.cityKey"),
         nullable=False,
         index=True,
     )
@@ -43,7 +43,7 @@ class Artist_Audience(db.Model):
     __table_args__ = (
         db.UniqueConstraint(
             "artist_uuid",
-            "city_id",
+            "cityKey",
             "platform",
             "observed_at",
             name="unique_artist_city_audience_snapshot",
