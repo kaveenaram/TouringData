@@ -1,6 +1,6 @@
 Flask
 flask-cors
 soundcharts
-Flask-SQLAlchemy
+flask-sqlalchemy
 python-dotenv
 requests
