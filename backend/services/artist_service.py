@@ -1,8 +1,7 @@
-from tables.artist import Artist
-from tables.artist_audience import Artist_Audience
+from backend.tables.artist import Artist
+from backend.tables.artist_audience import Artist_Audience
 from datetime import datetime, timezone, timedelta
 from backend import db
-from location_service import Location_Service
 
 # artist_service acts as a way to interact with the database's artist table.
 
@@ -15,21 +14,20 @@ def setArtist(uuid: str, name: str, slug: str, appUrl: str, imageUrl: str, month
     # otherwise return artist
     cutoff_date = datetime.now(timezone.utc) - timedelta(days=28)
     artist = getArtistByUUID(uuid)
+    is_new_artist = artist is None
 
-    if artist is None or artist.observed_at < cutoff_date:
-
-        artist = Artist(
-            uuid=uuid,
-            name=name,
-            slug=slug,
-            appUrl=appUrl,
-            imageUrl=imageUrl,
-            monthlyListeners=monthlyListeners,
-            observed_at=observed_at,
-            fetched_at=fetched_at,
-        )
-
+    if is_new_artist:
+        artist = Artist(uuid=uuid)
         db.session.add(artist)
+
+    if is_new_artist or artist.fetched_at is None or artist.fetched_at < cutoff_date:
+        artist.name = name
+        artist.slug = slug
+        artist.appUrl = appUrl
+        artist.imageUrl = imageUrl
+        artist.monthlyListeners = monthlyListeners
+        artist.observed_at = observed_at
+        artist.fetched_at = fetched_at
         db.session.commit()
         db.session.refresh(artist)
 

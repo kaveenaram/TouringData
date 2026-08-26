@@ -3,3 +3,7 @@
 
 
 # method that stores citykey in the database
+
+ # city selection and audience data are handled by artist_audience_repository
+ # venue workflows will use the cityKey saved during city selection later
+    

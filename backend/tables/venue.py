@@ -5,7 +5,7 @@ from backend import db
 class Venue(db.Model):
     venue_uuid = db.Column(db.String(200), primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    cityKey = db.Column(db.String(200), db.ForeignKey("city.cityKey"))
+    city_id = db.Column(db.Integer, db.ForeignKey("city.id"))
     country_code = db.Column(db.String(10), db.ForeignKey("country.country_code"))
     capacity = db.Column(db.String(200), nullable=False)
     imageUrl = db.Column(db.String(200), nullable=True)
