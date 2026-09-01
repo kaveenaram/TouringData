@@ -109,7 +109,7 @@ def getArtistMonthlyListeners(uuid: str):
     # if artist is not in database return None
     # otherwise return most recent artist monthly listeners
 
-    cutoff_date = datetime.now(timezone.utc) - timedelta(days=28)
+    cutoff_date = datetime.now() - timedelta(days=28)
 
     artist = getArtistByUUID(uuid)
     if artist is None:

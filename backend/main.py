@@ -18,12 +18,12 @@ def main():
             if available_artists:
                 print("please choose one artist from the list")
                 for i, artist in enumerate(available_artists):
-                    print(f"{i+1}. {artist["name"]}")
+                    print(f"{i+1}. {artist["name"]}, {artist["uuid"]}")
                 print(f"{len(available_artists)+1}. none")
 
                 artist = int(input("select by number: "))
 
-                if artist == len(available_artists)+1:
+                if artist == len(available_artists)+1 or artist < 1 or artist > len(available_artists):
                     print("no artist selected, please try again")
                     break
                 else:

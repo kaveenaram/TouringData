@@ -20,17 +20,15 @@ Returns
 """
 
 def searchForArtist(name: str):
-    result = artist_service.getArtistbyName(name)
-    if result is not None:
-        result = [result]
-    else:
-        try:
-            result = soundcharts_service.searchByName(name)
-        except soundcharts_service.SoundchartsError as error:
-            return {
-                "statusCode": error.status_code,
-                "error": error.message,
-            }
+
+    # always call soundcharts first to show all options.
+    try:
+        result = soundcharts_service.searchByName(name)
+    except soundcharts_service.SoundchartsError as error:
+        return {
+            "statusCode": error.status_code,
+            "error": error.message,
+        }
 
     if not result:
         return []
@@ -69,15 +67,29 @@ Returns
 """
 
 def selectArtist(artist: dict):
-    #check/save artist metadata
-    #check audience cache
-    #if stale, call Soundcharts once
-    #save all city snapshots
-    #return selected artist data
     if not artist or not artist.get("uuid"):
         return None
 
     uuid = artist["uuid"]
+
+    # check cache
+
+    cached_listeners = artist_service.getArtistMonthlyListeners(uuid)
+    
+    if cached_listeners is not None:
+        # cache hit - use cached data
+        cached_artist = artist_service.getArtistByUUID(uuid)
+        result = {
+            "uuid": cached_artist.uuid,
+            "name": cached_artist.name,
+            "slug": cached_artist.slug,
+            "appUrl": cached_artist.appUrl,
+            "imageUrl": cached_artist.imageUrl,
+            "monthlyListeners": cached_artist.monthlyListeners,
+        }
+        return result
+
+    # cache miss - call soundcharts api
     try:
         listener_items = soundcharts_service.getArtistTotalMonthlyListeners(uuid)
     except soundcharts_service.SoundchartsError as error:

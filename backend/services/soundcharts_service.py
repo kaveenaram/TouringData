@@ -90,10 +90,10 @@ Returns
 
 # search for artist by name
 def searchByName(name: str):
-    # returns max top 3 options
+    # returns max top 10 options
     # returns none if search does not work
     
-    return _getItems(lambda: sc.search.search_artist_by_name(name, 0, 3))
+    return _getItems(lambda: sc.search.search_artist_by_name(name, 0, 10))
 
 """
 -----------------------------

@@ -46,19 +46,22 @@ Returns
 """
 
 def setCity(city_name: str, country_code: str):
-
+        print(f"[setCity] Called for {city_name}, {country_code}")
         city = City.query.filter_by(
             city_name=city_name,
             country_code=country_code,
         ).first()
+        print(f"[setCity] Found existing city: {city is not None}")
 
         if city is None:
+            print(f"[setCity] Creating new city record")
             city = City(
                 city_name=city_name,
                 country_code=country_code
             )
             db.session.add(city)
             db.session.flush()
+            print(f"[setCity] New city created with ID: {city.id}")
 
         return city
 
@@ -144,8 +147,11 @@ Returns
 """
 
 def getCityByNameAndCountryCode(city_name: str, country_code: str):
-        return City.query.filter_by(
+        print(f"[getCityByNameAndCountryCode] Querying for {city_name}, {country_code}")
+        result = City.query.filter_by(
             city_name=city_name,
             country_code=country_code,
         ).first()
+        print(f"[getCityByNameAndCountryCode] Result: {result is not None}")
+        return result
 
