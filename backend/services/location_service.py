@@ -3,11 +3,23 @@ from backend import db
 
 # location_service acts as a way to interact with the database's location tables (City and Country).
 
-class Location_Service:
+
 
     # SETTERS
 
-    def setCountry(country_code: str, country_name: str):
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
+def setCountry(country_code: str, country_name: str):
 
         country = Country.query.filter_by(country_code=country_code).first()
 
@@ -21,7 +33,19 @@ class Location_Service:
             
         return country
 
-    def setCity(city_name: str, country_code: str):
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
+def setCity(city_name: str, country_code: str):
 
         city = City.query.filter_by(
             city_name=city_name,
@@ -38,28 +62,88 @@ class Location_Service:
 
         return city
 
-    def setCityKey(city_name: str, country_code: str, cityKey: str):
-        city = Location_Service.setCity(city_name, country_code)
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
+def setCityKey(city_name: str, country_code: str, cityKey: str):
+        city = setCity(city_name, country_code)
         if city.cityKey != cityKey:
             city.cityKey = cityKey
             db.session.flush()
         return city
 
-    def getCityById(cityId: int):
+# GETTERS
+
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
+def getCityById(cityId: int):
         return db.session.get(City, cityId)
 
-    # GETTERS
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
-    def getCountryByCode(country_code: str):
+def getCountryByCode(country_code: str):
         return Country.query.filter_by(country_code=country_code).first()
 
-    def getCityByCityKey(cityKey: str):
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
+def getCityByCityKey(cityKey: str):
         city = City.query.filter_by(cityKey=cityKey).first()
         if city is None:
             return None, None
         return city.city_name, city.country_code
 
-    def getCityByNameAndCountryCode(city_name: str, country_code: str):
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
+def getCityByNameAndCountryCode(city_name: str, country_code: str):
         return City.query.filter_by(
             city_name=city_name,
             country_code=country_code,

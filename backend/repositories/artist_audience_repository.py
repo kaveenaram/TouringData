@@ -1,10 +1,29 @@
-# communications between artist_audience_service and soundcharts_service
-# to make sure that the database is checked for cache before calling the api for info
+"""
+ARTIST_AUDIENCE_REPOSITORY
+
+Coordinates communication between artist_audience_service, location_service, and soundcharts_service,
+to make sure that the database is checked for cache before calling the api for information specifically
+regarding the artist audience and local monthly listeners.
+
+"""
+
+# IMPORTS
 
 from backend.services import artist_audience_service
 from backend.services import location_service
 from backend.services import soundcharts_service
 
+"""
+-----------------------------
+getLocalMonthlyListeners
+-----------------------------
+Checks cache for an artist's local monthly listeners.
+If not found, it calls Soundcharts and sends info to cache.
+-----------------------------
+parameters: uuid: str, cityId: int, platform="spotify"
+returns: localListeners
+-----------------------------
+"""
 
 def getLocalMonthlyListeners(uuid: str, cityId: int, platform="spotify"):
     localListeners = artist_audience_service.getLocalMonthlyListeners(
@@ -28,10 +47,22 @@ def getLocalMonthlyListeners(uuid: str, cityId: int, platform="spotify"):
             platform,
         )
 
-    # triple check that this logic works, is this the correct snapshot?
     return localListeners
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def getArtistCityAudience(artist_uuid: str, cityId: int, platform="spotify"):
+
     cached = artist_audience_service.getCachedAudience(
         artist_uuid,
         cityId,
@@ -39,7 +70,7 @@ def getArtistCityAudience(artist_uuid: str, cityId: int, platform="spotify"):
     )
 
     if cached is not None:
-        city_record = location_service.Location_Service.getCityById(cityId)
+        city_record = location_service.getCityById(cityId)
         return {
             "cityId": cached.city_id,
             "cityKey": city_record.cityKey if city_record else None,
@@ -64,10 +95,11 @@ def getArtistCityAudience(artist_uuid: str, cityId: int, platform="spotify"):
         cityId,
         platform,
     )
+
     if cached is None:
         return None
 
-    city_record = location_service.Location_Service.getCityById(cityId)
+    city_record = location_service.getCityById(cityId)
     return {
         "cityId": cached.city_id,
         "cityKey": city_record.cityKey if city_record else None,
@@ -77,8 +109,25 @@ def getArtistCityAudience(artist_uuid: str, cityId: int, platform="spotify"):
         "observedAt": cached.observed_at,
     }
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def selectCity(artist_uuid: str, cityId: int, platform="spotify"):
-    city_record = location_service.Location_Service.getCityById(cityId)
+    # ensure cities are cached before trying to select one
+    cities = getAllArtistCities(artist_uuid)
+    if isinstance(cities, dict) and "error" in cities:
+        return cities
+
+    city_record = location_service.getCityById(cityId)
 
     if city_record is None:
         return None
@@ -112,7 +161,7 @@ def selectCity(artist_uuid: str, cityId: int, platform="spotify"):
     if cityKey is None:
         return None
 
-    location_service.Location_Service.setCityKey(
+    location_service.setCityKey(
         city_record.city_name,
         city_record.country_code,
         cityKey,
@@ -120,37 +169,36 @@ def selectCity(artist_uuid: str, cityId: int, platform="spotify"):
     return getArtistCityAudience(artist_uuid, cityId, platform)
 
 
-# get city key method needs country code, you can get country code from location... you would have the country code with the country name
-# because we are getting the venue needed data from the artist audience, which comes with country code.
-
-
-# method that stores citykey in the database
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 def getAllArtistCities(uuid: str):
     # return the artist's top 50 fresh cities in a format that is easy for the front end to display
-    return artist_audience_service.getArtistTop50Cities(uuid, "spotify")
 
+    # checking the cache first
+    cities = artist_audience_service.getArtistTop50Cities(uuid, "spotify")
 
+    # calling for soundcharts if not found in cache
+    if not cities:
+        try:
+            payload = soundcharts_service.getLocalStreamingAudience(uuid)
+        except soundcharts_service.SoundchartsError as error:
+            return {
+                "statusCode": error.status_code,
+                "error": error.message,
+            }
+        
+        # Cache immediately
+        artist_audience_service.setArtistAudience(uuid, payload, "spotify")
+        cities = artist_audience_service.getArtistTop50Cities(uuid, "spotify")
 
-# for example:
-    # front end calls dashboard
-    # from the dashboard: artist audience monthly listeners
-    # call comes to artist_aud_repo
-    # repo calls artist_audience_service getLocalMonthlyListeners()
-    # artist_audience_service returns None, meaning now let's call the api
-    # repo calls soundcharts getlocalstreamingaudience
-    # repo calls artist_audience_service setArtistAudience()
-    # repo returns data to dashboard
-    # dashboard formats this data to be pushed to the front end
-    # front end receives, front end happy
-
-
-
-#request artist audience
- #   -> get fresh snapshots from database
-  #  -> if snapshots exist, return them
-   # -> otherwise call Soundcharts once
-   # -> pass complete payload to setArtistAudience()
-   # -> return saved snapshots
-
-#The repository should not call Soundcharts if getFreshSnapshots() returns a non-empty list.
+    return cities

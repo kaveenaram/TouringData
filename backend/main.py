@@ -1,19 +1,69 @@
 # all methods in main are to allow front end to access the backend and get data from the soundcharts api
 
-def dashboard():
-    # dashboard calls all needed methods for info
+from backend.repositories import artist_audience_repository, artist_repository
+from backend import app, init_db
+def main():
+    # we will be testing the functionality of our repositories
 
-    # first: makes user search for artist and choose city
-        # if artist does not exist, pop up error and try again
-    # second: once artist is found, dashboard should automatically ask for information from API based on artist and city
-    # find ways in backend to minimize API calls
+    print("welcome")
+    init_db()
+    with app.app_context():
+        available_artists = []
 
-    # ex / puesdo code
-    # input = "Jae Stephens"
-    # THIS WOULD NEED TO BE IN ARTIST.PY TO HIDE THE TRY AGAIN PART
-    # artist = json.loads(sc.search_for_artist(input, offset=0, limit=1))
-    # if artist = None: "Try Again" --> searchMethod
-    # else artist_uuid = artist["uuid"] 
-    # now you would use this uuid to access the rest of the info through the artist.py methods
+        print("yay")
+        while not available_artists:
+            artist = input("hello! please choose an artist:\n")
+            available_artists = artist_repository.searchForArtist(artist)
 
-    # how to mock api calls in python
+            if available_artists:
+                print("please choose one artist from the list")
+                for i, artist in enumerate(available_artists):
+                    print(f"{i+1}. {artist["name"]}")
+                print(f"{len(available_artists)+1}. none")
+
+                artist = int(input("select by number: "))
+
+                if artist == len(available_artists)+1:
+                    print("no artist selected, please try again")
+                    break
+                else:
+                    selectedArtist = artist_repository.selectArtist(available_artists[artist-1])
+
+                    cities = artist_audience_repository.getAllArtistCities(selectedArtist["uuid"])
+                    if not cities:
+                        return print("no cities found for this artist, please try again")
+                    
+                    for i, c in enumerate(cities):
+                        print(
+                            f"{i + 1}. "
+                            f"{c['cityName']}, "
+                            f"{c['countryCode']}"
+                        )
+
+                    city = int(input("select city: "))
+                    city = cities[city-1]
+                
+                    selectedCity = artist_audience_repository.selectCity(selectedArtist["uuid"], city["cityId"])
+
+                    print(
+                        f"{selectedArtist["uuid"]}: {selectedArtist["name"]}"
+                        f"\nTotal monthly listeners: "
+                        f"{selectedArtist["monthlyListeners"]}"
+                    )
+
+                    print(
+                        f"{selectedCity["cityName"]}, "
+                        f"{selectedCity["countryCode"]} "
+                        f"({selectedCity["cityKey"]}): "
+                        f"{selectedCity["localMonthlyListeners"]} listeners "
+                        f"as of {selectedCity["observedAt"]}"
+                    )
+
+            else:
+                print("no artists found, please try again")
+
+    print("byeeeee")
+    return 
+
+if __name__ == "__main__":
+    main()

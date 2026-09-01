@@ -10,13 +10,13 @@ class Artist(db.Model):
     imageUrl = db.Column(db.String(200), nullable=True)
     monthlyListeners = db.Column(db.String(200), nullable=True)
     observed_at = db.Column(
-            db.DateTime(timezone=True),
+            db.DateTime,
             nullable=False,
-            default=lambda: datetime.now(timezone.utc),
+            default=lambda: datetime.now(timezone.utc).replace(tzinfo=None),
         )
     
     fetched_at = db.Column(
-        db.DateTime(timezone=True),
+        db.DateTime,
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc).replace(tzinfo=None),
     )

@@ -29,15 +29,15 @@ class Artist_Audience(db.Model):
     )
 
     observed_at = db.Column(
-        db.DateTime(timezone=True),
+        db.DateTime,
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc).replace(tzinfo=None),
     )
 
     fetched_at = db.Column(
-        db.DateTime(timezone=True),
+        db.DateTime,
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc).replace(tzinfo=None),
     )
     
     __table_args__ = (

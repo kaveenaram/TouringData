@@ -1,25 +1,23 @@
 # communications between artist_service and soundcharts_service
 # to make sure that the database is checked for cache before calling the api for info
 
-from datetime import datetime, timezone
+# IMPORTS
 
+from datetime import datetime
 from backend.services import artist_service
 from backend.services import soundcharts_service
 
-# for example:
-    # front end calls dashboard
-    # from the dashboard: searching for artist
-    # call comes to artist_repo
-    # repo calls artist_service getArtistByName()
-    # artist_service returns None, meaning now let's call the api
-    # repo calls soundcharts searchForArtist()
-    # repo calls soundcharts getArtistTotalMonthlyListeners()
-    # repo calls artist_service setArtist()
-    # repo returns data to dashboard
-    # dashboard formats this data to be pushed to the front end
-    # front end receives, front end happy
-
-# only when an artist is selected does it call for their monthly listeners and put them in the database
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 def searchForArtist(name: str):
     result = artist_service.getArtistbyName(name)
@@ -58,6 +56,18 @@ def searchForArtist(name: str):
 
     return artists
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def selectArtist(artist: dict):
     #check/save artist metadata
     #check audience cache
@@ -80,7 +90,7 @@ def selectArtist(artist: dict):
     if listeners is None or observed_at is None:
         return None
 
-    fetched_at = datetime.now(timezone.utc)
+    fetched_at = datetime.now()
     artist = artist_service.setArtist(
         uuid=uuid,
         name=artist.get("name", ""),
@@ -101,6 +111,17 @@ def selectArtist(artist: dict):
         "monthlyListeners": artist.monthlyListeners,
     }
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 def getArtistMonthlyListeners(items: list):
     if not items:

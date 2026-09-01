@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).with_name(".env"))  # Load environment variables from .env file
 
+# TESTING
+
 from backend import app
 
 CORS(app)

@@ -2,12 +2,35 @@ from backend.api import sc
 
 # please add in what to do with error codes
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 class SoundchartsError(Exception):
     def __init__(self, status_code: int, message: str):
         self.status_code = status_code
         self.message = message
         super().__init__(message)
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 def _getItems(call):
     try:
@@ -33,6 +56,17 @@ def _getItems(call):
 
     return payload.get("items", [])
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 def _getErrorMessage(status_code: int):
     messages = {
@@ -42,7 +76,17 @@ def _getErrorMessage(status_code: int):
     }
     return messages.get(status_code, "Soundcharts request failed.")
 
-
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 # search for artist by name
 def searchByName(name: str):
@@ -51,6 +95,17 @@ def searchByName(name: str):
     
     return _getItems(lambda: sc.search.search_artist_by_name(name, 0, 3))
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 # search for artist by uuid
 def getArtistByUUID(uuid: str):
@@ -58,15 +113,50 @@ def getArtistByUUID(uuid: str):
     # returns none if artist does not exist
     return _getItems(lambda: sc.artist.get_artist_metadata(uuid))
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def getArtistTotalMonthlyListeners(uuid: str):
     return _getItems(lambda: sc.artist.get_streaming_audience(uuid, "spotify"))
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 # search for local streaming audience
 def getLocalStreamingAudience(uuid: str):
     # returns streaming audience data
     # returns none if artist does not exist
     return _getItems(lambda: sc.artist.get_local_streaming_audience(uuid, "spotify"))
+
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
 
 def getCityKey(city: str, countryCode: str):
     return _getItems(

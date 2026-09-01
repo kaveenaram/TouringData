@@ -1,3 +1,7 @@
+
+
+# IMPORTS
+
 from backend.tables.artist_audience import Artist_Audience
 from datetime import datetime, timezone, timedelta
 from backend import db
@@ -8,12 +12,26 @@ from backend.tables.location import City
 
 # artist_audience_service acts as a way to interact with the database's artist_audience table.
 
+# GLOBAL VARIABLES
+
 AUDIENCE_CACHE_TTL = timedelta(days=7)
 
 # SETTERS
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def setArtistAudience(artist_uuid: str, payload: list, platform="spotify"):
-    fetched_at = datetime.now(timezone.utc)
+    fetched_at = datetime.now(timezone.utc).replace(tzinfo=None)
 
     latest_item = max(
         payload or [],
@@ -31,21 +49,21 @@ def setArtistAudience(artist_uuid: str, payload: list, platform="spotify"):
     for city_plot in latest_item.get("cityPlots", []):
         observed_at = datetime.fromisoformat(
             city_plot["date"].replace("Z", "+00:00")
-        )
+        ).replace(tzinfo=None)
          
         city_name = city_plot.get("cityName")
         country_code = city_plot.get("countryCode")
         country_name = city_plot.get("countryName")
 
         # set country and city in the database
-        location_service.Location_Service.setCountry(country_code, country_name)
-        city = location_service.Location_Service.getCityByNameAndCountryCode(
+        location_service.setCountry(country_code, country_name)
+        city = location_service.getCityByNameAndCountryCode(
             city_name,
             country_code,
         )
 
         if city is None:
-            city = location_service.Location_Service.setCity(city_name, country_code)
+            city = location_service.setCity(city_name, country_code)
 
         snapshot = Artist_Audience.query.filter_by(
             artist_uuid=artist_uuid,
@@ -76,10 +94,22 @@ def setArtistAudience(artist_uuid: str, payload: list, platform="spotify"):
 
 # GETTERS
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def getCachedAudience(artist_uuid: str, cityId: int, platform="spotify"):
     # check if artist audience is in database by artist_uuid, cityId, and platform
     # if artist audience is not in database return None
-    cutoff_date = datetime.now(timezone.utc) - AUDIENCE_CACHE_TTL  # 7 day cutoff based on Soundcharts observation date
+    cutoff_date = datetime.now() - AUDIENCE_CACHE_TTL  # 7 day cutoff based on Soundcharts observation date
 
     cached_audience = (Artist_Audience.query
             .filter_by(
@@ -94,6 +124,18 @@ def getCachedAudience(artist_uuid: str, cityId: int, platform="spotify"):
 
     return cached_audience
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def getLocalMonthlyListeners(artist_uuid: str, cityId: int, platform="spotify"):
     # check if artist audience is in database by artist_uuid, cityId, and platform
     # if artist audience is not in database return None
@@ -104,14 +146,28 @@ def getLocalMonthlyListeners(artist_uuid: str, cityId: int, platform="spotify"):
     else:
         return None
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 # get artist top 50 cities by uuid
+
+# makes no sense.. please review
 def getArtistTop50Cities(artist_uuid: str, platform="spotify"):
     artist = artist_service.getArtistByUUID(artist_uuid)
 
     if artist is None:
         return None
 
-    cutoff_date = datetime.now(timezone.utc) - AUDIENCE_CACHE_TTL
+    cutoff_date = datetime.now() - AUDIENCE_CACHE_TTL
 
     latest_observed_at = (
         db.session.query(db.func.max(Artist_Audience.observed_at))
@@ -157,6 +213,18 @@ def getArtistTop50Cities(artist_uuid: str, platform="spotify"):
         for snapshot, city in top_snapshots
     ]
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def getArtistTop50CityKeys(artist_uuid: str, platform="spotify"):
     return [
         city["cityKey"]
@@ -164,10 +232,22 @@ def getArtistTop50CityKeys(artist_uuid: str, platform="spotify"):
         if city["cityKey"] is not None
     ]
 
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
 def getFreshSnapshots(artist_uuid: str, platform="spotify"):
     # check if artist audience is in database by artist_uuid, and platform
     # if artist audience is not in database return None
-    cutoff_date = datetime.now(timezone.utc) - AUDIENCE_CACHE_TTL  # 7 day cutoff based on Soundcharts observation date
+    cutoff_date = datetime.now() - AUDIENCE_CACHE_TTL  # 7 day cutoff based on Soundcharts observation date
 
     fresh_snapshots = (Artist_Audience.query
             .filter_by(
