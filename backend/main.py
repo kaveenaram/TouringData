@@ -6,6 +6,10 @@ def main():
 
     init_db()
     with app.app_context():
+
+
+        
+        """
         available_artists = []
 
         while not available_artists:
@@ -60,6 +64,7 @@ def main():
                 print("no artists found, please try again")
 
     print("byeeeee")
+    """
     return 
 
 if __name__ == "__main__":

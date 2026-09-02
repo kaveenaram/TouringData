@@ -32,7 +32,9 @@ def searchForArtist(name: str):
                 "slug": artist.get("slug"),
                 "appUrl": artist.get("appUrl"),
                 "imageUrl": artist.get("imageUrl"),
-                "genre": artist.get("genres", [{}])[0].get("root") if artist.get("genres") else None,
+                "genre": (artist.get("genres", [{}])[0].get("root")
+                          if artist.get("genres")
+                          else None),
             })
         else:
             artists.append({
