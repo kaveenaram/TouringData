@@ -18,7 +18,7 @@ def main():
             if available_artists:
                 print("please choose one artist from the list")
                 for i, artist in enumerate(available_artists):
-                    print(f"{i+1}. {artist["name"]}, {artist["uuid"]}")
+                    print(f"{i+1}. {artist["name"]}, {artist["genre"]}: ({artist["uuid"]})")
                 print(f"{len(available_artists)+1}. none")
 
                 artist = int(input("select by number: "))

@@ -42,6 +42,7 @@ def searchForArtist(name: str):
                 "slug": artist.get("slug"),
                 "appUrl": artist.get("appUrl"),
                 "imageUrl": artist.get("imageUrl"),
+                "genre": artist.get("genres", [{}])[0].get("root") if artist.get("genres") else None,
             })
         else:
             artists.append({
@@ -50,6 +51,7 @@ def searchForArtist(name: str):
                 "slug": artist.slug,
                 "appUrl": artist.appUrl,
                 "imageUrl": artist.imageUrl,
+                "genre": artist.genre,
             })
 
     return artists
@@ -85,6 +87,7 @@ def selectArtist(artist: dict):
             "slug": cached_artist.slug,
             "appUrl": cached_artist.appUrl,
             "imageUrl": cached_artist.imageUrl,
+            "genre": cached_artist.genre,
             "monthlyListeners": cached_artist.monthlyListeners,
         }
         return result
@@ -109,6 +112,7 @@ def selectArtist(artist: dict):
         slug=artist.get("slug", ""),
         appUrl=artist.get("appUrl"),
         imageUrl=artist.get("imageUrl"),
+        genre=artist.get("genre"),
         monthlyListeners=str(listeners),
         observed_at=observed_at,
         fetched_at=fetched_at,
@@ -120,6 +124,7 @@ def selectArtist(artist: dict):
         "slug": artist.slug,
         "appUrl": artist.appUrl,
         "imageUrl": artist.imageUrl,
+        "genre": artist.genre,
         "monthlyListeners": artist.monthlyListeners,
     }
 

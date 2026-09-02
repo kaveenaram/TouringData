@@ -19,7 +19,7 @@ Returns
 -----------------------------
 """
 
-def setArtist(uuid: str, name: str, slug: str, appUrl: str, imageUrl: str, monthlyListeners: str, observed_at: datetime, fetched_at: datetime):
+def setArtist(uuid: str, name: str, slug: str, appUrl: str, imageUrl: str, genre: str, monthlyListeners: str, observed_at: datetime, fetched_at: datetime):
     # check if artist is in database by uuid
     # if artist is not in database or data is outdated, create artist
     # otherwise return artist
@@ -44,6 +44,7 @@ def setArtist(uuid: str, name: str, slug: str, appUrl: str, imageUrl: str, month
         artist.slug = slug
         artist.appUrl = appUrl
         artist.imageUrl = imageUrl
+        artist.genre = genre
         artist.monthlyListeners = monthlyListeners
         artist.observed_at = observed_at
         artist.fetched_at = fetched_at
@@ -176,4 +177,23 @@ def getArtistSlug(uuid: str):
     # otherwise return artist slug
     artist = getArtistByUUID(uuid)
     return artist.slug if artist else None
+
+"""
+-----------------------------
+Name
+-----------------------------
+Description
+Use
+-----------------------------
+Parameters
+Returns
+-----------------------------
+"""
+
+def getArtistGenre(uuid: str):
+    # check if artist is in database by uuid
+    # if artist is not in database return None
+    # otherwise return artist genre
+    artist = getArtistByUUID(uuid)
+    return artist.genre if artist else None
 

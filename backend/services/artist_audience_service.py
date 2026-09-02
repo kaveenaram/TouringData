@@ -34,10 +34,14 @@ Returns
 def setArtistAudience(artist_uuid: str, payload: dict, platform="spotify"):
     print(f"[setArtistAudience] Starting for artist_uuid: {artist_uuid}")
     
-    # Extract lastCrawlDate from payload's 'related' section - this is when Soundcharts last collected the data
-    last_crawl_date_str = payload.get("related", {}).get("lastCrawlDate")
+    # extract lastCrawlDate from payload's 'related' section
+    # this is when soundcharts last collected the data
+    # extract lastCrawlDate from payload's 'related' section
+    # this is when soundcharts last collected the data
+    related = payload.get("related", {})
+    last_crawl_date_str = related.get("lastCrawlDate")
     print(f"[setArtistAudience] Raw lastCrawlDate from payload: {last_crawl_date_str}")
-    
+        
     # observed_at will be set to lastCrawlDate (when Soundcharts observed)
     observed_at_value = None
     if last_crawl_date_str:

@@ -8,6 +8,7 @@ class Artist(db.Model):
     slug = db.Column(db.String(200), nullable=False)
     appUrl = db.Column(db.String(200), nullable=True)
     imageUrl = db.Column(db.String(200), nullable=True)
+    genre = db.Column(db.String(200), nullable=True)
     monthlyListeners = db.Column(db.String(200), nullable=True)
     observed_at = db.Column(
             db.DateTime,
