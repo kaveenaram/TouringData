@@ -4,17 +4,7 @@ import sys
 
 # please add in what to do with error codes
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 class SoundchartsError(Exception):
     def __init__(self, status_code: int, message: str):
@@ -31,17 +21,7 @@ def _handleError(error: SoundchartsError):
     print("[Soundcharts Service] Ending application gracefully...")
     sys.exit(1)
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def _getItems(call):
     payload = None
@@ -69,17 +49,7 @@ def _getItems(call):
 
     return payload.get("items", [])
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def _getErrorMessage(status_code: int):
     messages = {
@@ -89,17 +59,7 @@ def _getErrorMessage(status_code: int):
     }
     return messages.get(status_code, "Soundcharts request failed.")
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def _getPayload(call):
     try:
@@ -124,17 +84,7 @@ def _getPayload(call):
 
     return payload  # Return the full payload
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 # search for artist by name
 def searchByName(name: str):
@@ -144,17 +94,7 @@ def searchByName(name: str):
     except SoundchartsError as error:
         _handleError(error)
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 # search for artist by uuid
 def getArtistByUUID(uuid: str):
@@ -164,17 +104,7 @@ def getArtistByUUID(uuid: str):
     except SoundchartsError as error:
         _handleError(error)
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistTotalMonthlyListeners(uuid: str):
     try:
@@ -182,17 +112,7 @@ def getArtistTotalMonthlyListeners(uuid: str):
     except SoundchartsError as error:
         _handleError(error)
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 # search for local streaming audience
 def getLocalStreamingAudience(uuid: str):
@@ -203,17 +123,7 @@ def getLocalStreamingAudience(uuid: str):
     except SoundchartsError as error:
         _handleError(error)
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getCityKey(city: str, countryCode: str):
     try:

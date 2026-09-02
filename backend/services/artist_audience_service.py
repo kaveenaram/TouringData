@@ -19,17 +19,7 @@ AUDIENCE_CACHE_TTL = timedelta(days=7)
 
 # SETTERS
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def setArtistAudience(artist_uuid: str, payload: dict, platform="spotify"):
     print(f"[setArtistAudience] Starting for artist_uuid: {artist_uuid}")
@@ -132,17 +122,7 @@ def setArtistAudience(artist_uuid: str, payload: dict, platform="spotify"):
 
 # GETTERS
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getCachedAudience(artist_uuid: str, cityId: int, platform="spotify"):
     # check if artist audience is in database by artist_uuid, cityId, and platform
@@ -162,17 +142,7 @@ def getCachedAudience(artist_uuid: str, cityId: int, platform="spotify"):
 
     return cached_audience
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getLocalMonthlyListeners(artist_uuid: str, cityId: int, platform="spotify"):
     # check if artist audience is in database by artist_uuid, cityId, and platform
@@ -184,17 +154,7 @@ def getLocalMonthlyListeners(artist_uuid: str, cityId: int, platform="spotify"):
     else:
         return None
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 # get artist top 50 cities by uuid
 
@@ -261,17 +221,7 @@ def getArtistTop50Cities(artist_uuid: str, platform="spotify"):
     ]
     print(f"[getArtistTop50Cities] Returning {len(result)} cities")
     return result
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getFreshSnapshots(artist_uuid: str, platform="spotify"):
     # check if artist audience is in database by artist_uuid, and platform

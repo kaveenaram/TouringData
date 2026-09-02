@@ -7,17 +7,7 @@ from backend import db
 
 # SETTERS
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def setArtist(uuid: str, name: str, slug: str, appUrl: str, imageUrl: str, genre: str, monthlyListeners: str, observed_at: datetime, fetched_at: datetime):
     # check if artist is in database by uuid
@@ -55,17 +45,7 @@ def setArtist(uuid: str, name: str, slug: str, appUrl: str, imageUrl: str, genre
 
 # GETTERS 
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistbyName(name: str):
     # check if artist is in database by name, case insensitive
@@ -74,17 +54,7 @@ def getArtistbyName(name: str):
     artist = Artist.query.filter(Artist.name.ilike(name)).first()
     return artist
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistByUUID(uuid: str):
     # check if artist is in database by uuid
@@ -93,17 +63,7 @@ def getArtistByUUID(uuid: str):
     artist = Artist.query.filter_by(uuid=uuid).first()
     return artist
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistMonthlyListeners(uuid: str):
     # check if artist is in database by uuid
@@ -121,17 +81,7 @@ def getArtistMonthlyListeners(uuid: str):
         else:
             return None
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistImageUrl(uuid: str):
     # check if artist is in database by uuid
@@ -140,17 +90,7 @@ def getArtistImageUrl(uuid: str):
     artist = getArtistByUUID(uuid)
     return artist.imageUrl if artist else None
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistAppUrl(uuid: str):
     # check if artist is in database by uuid
@@ -159,17 +99,7 @@ def getArtistAppUrl(uuid: str):
     artist = getArtistByUUID(uuid)
     return artist.appUrl if artist else None
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistSlug(uuid: str):
     # check if artist is in database by uuid
@@ -178,17 +108,7 @@ def getArtistSlug(uuid: str):
     artist = getArtistByUUID(uuid)
     return artist.slug if artist else None
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistGenre(uuid: str):
     # check if artist is in database by uuid

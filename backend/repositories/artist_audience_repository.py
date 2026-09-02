@@ -11,18 +11,6 @@ regarding the artist audience and local monthly listeners.
 
 from backend.services import artist_audience_service, artist_service, location_service, soundcharts_service
 
-"""
------------------------------
-getLocalMonthlyListeners
------------------------------
-Checks cache for an artist's local monthly listeners.
-If not found, it calls Soundcharts and sends info to cache.
------------------------------
-parameters: uuid: str, cityId: int, platform="spotify"
-returns: localListeners
------------------------------
-"""
-
 def getLocalMonthlyListeners(uuid: str, cityId: int, platform="spotify"):
     localListeners = artist_audience_service.getLocalMonthlyListeners(
         uuid,
@@ -46,18 +34,6 @@ def getLocalMonthlyListeners(uuid: str, cityId: int, platform="spotify"):
         )
 
     return localListeners
-
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
 
 def getArtistCityAudience(artist_uuid: str, cityId: int, platform="spotify"):
 
@@ -106,18 +82,6 @@ def getArtistCityAudience(artist_uuid: str, cityId: int, platform="spotify"):
         "localMonthlyListeners": cached.local_monthly_listeners,
         "observedAt": cached.observed_at,
     }
-
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
 
 def selectCity(artist_uuid: str, cityId: int, platform="spotify"):
     # ensure cities are cached before trying to select one
@@ -176,19 +140,6 @@ def selectCity(artist_uuid: str, cityId: int, platform="spotify"):
         cityKey,
     )
     return getArtistCityAudience(artist_uuid, cityId, platform)
-
-
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
 
 def getAllArtistCities(uuid: str):
     # return the artist's top 50 fresh cities in a format that is easy for the front end to display

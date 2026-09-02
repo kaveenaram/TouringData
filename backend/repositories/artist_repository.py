@@ -7,17 +7,7 @@ from datetime import datetime
 from backend.services import artist_service
 from backend.services import soundcharts_service
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def searchForArtist(name: str):
 
@@ -56,17 +46,7 @@ def searchForArtist(name: str):
 
     return artists
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def selectArtist(artist: dict):
     if not artist or not artist.get("uuid"):
@@ -128,17 +108,7 @@ def selectArtist(artist: dict):
         "monthlyListeners": artist.monthlyListeners,
     }
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getArtistMonthlyListeners(items: list):
     if not items:

@@ -3,14 +3,11 @@
 from backend.repositories import artist_audience_repository, artist_repository
 from backend import app, init_db
 def main():
-    # we will be testing the functionality of our repositories
 
-    print("welcome")
     init_db()
     with app.app_context():
         available_artists = []
 
-        print("yay")
         while not available_artists:
             artist = input("hello! please choose an artist:\n")
             available_artists = artist_repository.searchForArtist(artist)

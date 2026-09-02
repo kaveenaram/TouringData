@@ -7,17 +7,7 @@ from backend import db
 
     # SETTERS
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def setCountry(country_code: str, country_name: str):
 
@@ -33,17 +23,7 @@ def setCountry(country_code: str, country_name: str):
             
         return country
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def setCity(city_name: str, country_code: str):
         print(f"[setCity] Called for {city_name}, {country_code}")
@@ -65,17 +45,7 @@ def setCity(city_name: str, country_code: str):
 
         return city
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def setCityKey(city_name: str, country_code: str, cityKey: str):
         city = setCity(city_name, country_code)
@@ -86,47 +56,17 @@ def setCityKey(city_name: str, country_code: str, cityKey: str):
 
 # GETTERS
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getCityById(cityId: int):
         return db.session.get(City, cityId)
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getCountryByCode(country_code: str):
         return Country.query.filter_by(country_code=country_code).first()
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getCityByCityKey(cityKey: str):
         city = City.query.filter_by(cityKey=cityKey).first()
@@ -134,17 +74,7 @@ def getCityByCityKey(cityKey: str):
             return None, None
         return city.city_name, city.country_code
 
-"""
------------------------------
-Name
------------------------------
-Description
-Use
------------------------------
-Parameters
-Returns
------------------------------
-"""
+
 
 def getCityByNameAndCountryCode(city_name: str, country_code: str):
         print(f"[getCityByNameAndCountryCode] Querying for {city_name}, {country_code}")
