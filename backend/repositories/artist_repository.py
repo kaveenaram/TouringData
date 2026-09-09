@@ -49,21 +49,16 @@ def searchForArtist(name: str):
     return artists
 
 
-
 def selectArtist(artist: dict):
     if not artist or not artist.get("uuid"):
         return None
 
     uuid = artist["uuid"]
-
-    # check cache
-
+    cached_artist = artist_service.getArtistByUUID(uuid)
     cached_listeners = artist_service.getArtistMonthlyListeners(uuid)
-    
-    if cached_listeners is not None:
-        # cache hit - use cached data
-        cached_artist = artist_service.getArtistByUUID(uuid)
-        result = {
+
+    if cached_artist is not None and cached_listeners is not None:
+        return {
             "uuid": cached_artist.uuid,
             "name": cached_artist.name,
             "slug": cached_artist.slug,
@@ -72,43 +67,55 @@ def selectArtist(artist: dict):
             "genre": cached_artist.genre,
             "monthlyListeners": cached_artist.monthlyListeners,
         }
-        return result
 
-    # cache miss - call soundcharts api
     try:
         listener_items = soundcharts_service.getArtistTotalMonthlyListeners(uuid)
-    except soundcharts_service.SoundchartsError as error:
+        listeners, observed_at = getArtistMonthlyListeners(listener_items)
+
+        if listeners is None or observed_at is None:
+            raise soundcharts_service.SoundchartsError(
+                503,
+                "Monthly listener information is unavailable.",
+            )
+
+        saved_artist = artist_service.setArtist(
+            uuid=uuid,
+            name=artist.get("name", ""),
+            slug=artist.get("slug", ""),
+            appUrl=artist.get("appUrl"),
+            imageUrl=artist.get("imageUrl"),
+            genre=artist.get("genre"),
+            monthlyListeners=str(listeners),
+            observed_at=observed_at,
+            fetched_at=datetime.now(),
+        )
+
         return {
-            "statusCode": error.status_code,
-            "error": error.message,
+            "uuid": saved_artist.uuid,
+            "name": saved_artist.name,
+            "slug": saved_artist.slug,
+            "appUrl": saved_artist.appUrl,
+            "imageUrl": saved_artist.imageUrl,
+            "genre": saved_artist.genre,
+            "monthlyListeners": saved_artist.monthlyListeners,
         }
-    listeners, observed_at = getArtistMonthlyListeners(listener_items)
 
-    if listeners is None or observed_at is None:
-        return None
+    except soundcharts_service.SoundchartsError:
+        if cached_artist is not None:
+            return {
+                "uuid": cached_artist.uuid,
+                "name": cached_artist.name,
+                "slug": cached_artist.slug,
+                "appUrl": cached_artist.appUrl,
+                "imageUrl": cached_artist.imageUrl,
+                "genre": cached_artist.genre,
+                "monthlyListeners": cached_artist.monthlyListeners,
+            }
 
-    fetched_at = datetime.now()
-    artist = artist_service.setArtist(
-        uuid=uuid,
-        name=artist.get("name", ""),
-        slug=artist.get("slug", ""),
-        appUrl=artist.get("appUrl"),
-        imageUrl=artist.get("imageUrl"),
-        genre=artist.get("genre"),
-        monthlyListeners=str(listeners),
-        observed_at=observed_at,
-        fetched_at=fetched_at,
-    )
-
-    return {
-        "uuid": artist.uuid,
-        "name": artist.name,
-        "slug": artist.slug,
-        "appUrl": artist.appUrl,
-        "imageUrl": artist.imageUrl,
-        "genre": artist.genre,
-        "monthlyListeners": artist.monthlyListeners,
-    }
+        return {
+            "statusCode": 503,
+            "error": "Artist information is currently unavailable.",
+        }
 
 
 

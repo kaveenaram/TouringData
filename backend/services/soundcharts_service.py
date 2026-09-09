@@ -16,11 +16,8 @@ class SoundchartsError(Exception):
 import sys
 
 def _handleError(error: SoundchartsError):
-    """Handle SoundchartsError gracefully and exit"""
     print(f"\n[Soundcharts Service Error] {error.status_code} - {error.message}")
-    print("[Soundcharts Service] Ending application gracefully...")
-    sys.exit(1)
-
+    raise error
 
 
 def _getItems(call):
@@ -90,6 +87,7 @@ def _getPayload(call):
 def searchByName(name: str):
     # returns max top 10 options
     try:
+        print(f"[Soundcharts Service] Searching for artist by name: {name}")
         return _getItems(lambda: sc.search.search_artist_by_name(name, 0, 10))
     except SoundchartsError as error:
         _handleError(error)
@@ -100,6 +98,7 @@ def searchByName(name: str):
 def getArtistByUUID(uuid: str):
     # returns artist data
     try:
+        print(f"[Soundcharts Service] Searching for artist by UUID: {uuid}")
         return _getItems(lambda: sc.artist.get_artist_metadata(uuid))
     except SoundchartsError as error:
         _handleError(error)
@@ -108,6 +107,7 @@ def getArtistByUUID(uuid: str):
 
 def getArtistTotalMonthlyListeners(uuid: str):
     try:
+        print(f"[Soundcharts Service] Getting total monthly listeners for artist UUID: {uuid}")
         return _getItems(lambda: sc.artist.get_streaming_audience(uuid, "spotify", end_date=date.today().isoformat()))
     except SoundchartsError as error:
         _handleError(error)
@@ -119,6 +119,7 @@ def getLocalStreamingAudience(uuid: str):
     # returns streaming audience data with related metadata
     # returns empty dict if artist does not exist
     try:
+        print(f"[Soundcharts Service] Getting local streaming audience for artist UUID: {uuid}")
         return _getPayload(lambda: sc.artist.get_local_streaming_audience(uuid, "spotify", end_date=date.today().isoformat()))
     except SoundchartsError as error:
         _handleError(error)
@@ -127,6 +128,7 @@ def getLocalStreamingAudience(uuid: str):
 
 def getCityKey(city: str, countryCode: str):
     try:
+        print(f"[Soundcharts Service] Getting city key for {city}, {countryCode}")
         return _getItems(
             lambda: sc.referential.get_cities_for_venue_festival(countryCode, city)
         )
