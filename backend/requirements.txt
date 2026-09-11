@@ -4,3 +4,4 @@ soundcharts
 flask-sqlalchemy
 python-dotenv
 requests
+apify-client

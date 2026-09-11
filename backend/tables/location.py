@@ -14,3 +14,4 @@ class City(db.Model):
         db.ForeignKey("country.country_code"),
         nullable=False,
     )
+
