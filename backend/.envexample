@@ -1,3 +1,5 @@
 SOUNDCHARTS_API_ID = 
 SOUNDCHARTS_API_KEY =
 SOUNDCHARTS_API_URL = "https://customer.api.soundcharts.com"
+APIFY_TOKEN =
+APIFY_VENUE_ACTOR_ID = "m9qbUfZoYuKxE9fht"
