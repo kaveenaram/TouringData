@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from backend import limiter
 
 artists_bp = Blueprint("artists", __name__, url_prefix="/api")
 
@@ -66,16 +67,15 @@ def get_city_audience(uuid, city_id):
     return repository_response(result, "Audience data not found")
 
 @artists_bp.get("/venues/recommend")
+@limiter.limit("10 per hour")
 def recommend_venues():
     from backend.repositories import venue_repository
 
     artist_uuid = request.args.get("artist_id", "").strip()
     city_id = request.args.get("city_id", type=int)
-    min_capacity = request.args.get("min_capacity", type=int)
-    max_capacity = request.args.get("max_capacity", type=int)
 
     if not artist_uuid or not city_id:
         return jsonify({"error": "artist_id and city_id are required"}), 400
 
-    result = venue_repository.find_best_venues_for_artist(artist_uuid, city_id)
+    result = venue_repository.findBestVenuesForArtist(artist_uuid, city_id)
     return repository_response(result, "No venues found for this artist/city")
