@@ -3,3 +3,5 @@ SOUNDCHARTS_API_KEY =
 SOUNDCHARTS_API_URL = "https://customer.api.soundcharts.com"
 APIFY_TOKEN =
 APIFY_VENUE_ACTOR_ID = "m9qbUfZoYuKxE9fht"
+PARSE_API_KEY =
+PARSE_SCRAPER_ID = "2f8af6ad-0d75-4c4f-a0e0-1a22caa8307b"

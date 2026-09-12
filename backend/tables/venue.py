@@ -1,7 +1,7 @@
 from backend import db
 
 class Venue(db.Model):
-    venue_uuid = db.Column(db.String(200), primary_key=True)
+    venue_id = db.Column(db.String(200), primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     city_id = db.Column(db.Integer, db.ForeignKey("city.id"))
     country_code = db.Column(db.String(10), db.ForeignKey("country.country_code"))

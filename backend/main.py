@@ -129,7 +129,7 @@ def displayTorontoVenues():
     location_service.setCountry("CA", "Canada")
     city = location_service.setCity("Toronto", "CA")
 
-    loadResult = venue_repository.ensureCityVenuesLoaded(city.id, "Toronto", "Canada", "CA")
+    loadResult = venue_repository.ensureCityVenuesLoaded(city.id, "Toronto", "CA")
     if isinstance(loadResult, dict) and "error" in loadResult:
         print(f"Error loading venues: {loadResult['error']}")
         return
