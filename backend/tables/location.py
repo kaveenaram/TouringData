@@ -14,4 +14,5 @@ class City(db.Model):
         db.ForeignKey("country.country_code"),
         nullable=False,
     )
-
+    # tracks whether venue ingestion has run for this city, even if zero venues were found
+    venue_data_loaded = db.Column(db.Boolean, nullable=False, default=False)
