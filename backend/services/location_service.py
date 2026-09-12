@@ -1,13 +1,15 @@
 from backend.tables.location import City, Country
 from backend import db
 
-# location_service acts as a way to interact with the database's location tables (City and Country).
+# SETTERS
 
-
-
-    # SETTERS
-
-
+def markCityVenuesLoaded(cityId: int):
+    city = getCityById(cityId)
+    if city is None:
+        return None
+    city.venue_data_loaded = True
+    db.session.flush()
+    return city
 
 def setCountry(country_code: str, country_name: str):
 
@@ -22,8 +24,6 @@ def setCountry(country_code: str, country_name: str):
             db.session.flush()
             
         return country
-
-
 
 def setCity(city_name: str, country_code: str):
         print(f"[setCity] Called for {city_name}, {country_code}")
@@ -45,8 +45,6 @@ def setCity(city_name: str, country_code: str):
 
         return city
 
-
-
 def setCityKey(city_name: str, country_code: str, cityKey: str):
         city = setCity(city_name, country_code)
         if city.cityKey != cityKey:
@@ -56,16 +54,12 @@ def setCityKey(city_name: str, country_code: str, cityKey: str):
 
 # GETTERS
 
-
-
 def getCityById(cityId: int):
         return db.session.get(City, cityId)
 
 
-
 def getCountryByCode(country_code: str):
         return Country.query.filter_by(country_code=country_code).first()
-
 
 
 def getCityByCityKey(cityKey: str):
@@ -73,7 +67,6 @@ def getCityByCityKey(cityKey: str):
         if city is None:
             return None, None
         return city.city_name, city.country_code
-
 
 
 def getCityByNameAndCountryCode(city_name: str, country_code: str):
@@ -85,3 +78,6 @@ def getCityByNameAndCountryCode(city_name: str, country_code: str):
         print(f"[getCityByNameAndCountryCode] Result: {result is not None}")
         return result
 
+def cityHasVenuesLoaded(cityId: int) -> bool:
+        city = getCityById(cityId)
+        return bool(city and city.venue_data_loaded)
