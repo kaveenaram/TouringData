@@ -2,8 +2,8 @@ from sqlalchemy import cast, Integer
 from backend import db
 from backend.tables.venue import Venue
 
-def getVenueByUuid(venueUuid: str):
-    return db.session.get(Venue, venueUuid)
+def getVenueByUUID(venueUUID: str):
+    return db.session.get(Venue, venueUUID)
 
 def getVenuesByCity(cityId: int):
     return Venue.query.filter_by(city_id=cityId).all()
@@ -19,13 +19,13 @@ def getVenuesByCityAndCapacity(cityId: int, minCapacity: int, maxCapacity: int):
         .all()
     )
 
-def setVenue(venueUuid, name, cityId, countryCode, capacity, address=None,
+def setVenue(venueUUID, name, cityId, countryCode, capacity, address=None,
                  region=None, postalCode=None, latitude=None, longitude=None,
                  imageUrl=None, type=None, websiteUrl=None):
-    venue = getVenueByUuid(venueUuid)
+    venue = getVenueByUUID(venueUUID)
 
     if venue is None:
-        venue = Venue(venue_uuid=venueUuid)
+        venue = Venue(venue_uuid=venueUUID)
         db.session.add(venue)
 
     venue.name = name

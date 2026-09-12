@@ -19,7 +19,7 @@ def _normalizeText(text):
     return re.sub(r"[^a-z0-9]+", " ", str(text).lower()).strip()
 
 
-def _buildVenueUuid(name, cityName, countryCode):
+def _buildVenueUUID(name, cityName, countryCode):
     key = f"{_normalizeText(name)}|{_normalizeText(cityName)}|{_normalizeText(countryCode)}"
     return str(uuid.uuid5(VENUE_NAMESPACE, key))
 
@@ -42,7 +42,7 @@ def ensureCityVenuesLoaded(cityId: int, cityName: str, countryName: str, country
         # IMPORTANT: do not mark the city loaded on failure
         return {"statusCode": error.status_code, "error": error.message}
 
-    venuesByUuid = {}
+    venuesByUUID = {}
     for event in events:
         if not isinstance(event, dict):
             continue
@@ -55,12 +55,12 @@ def ensureCityVenuesLoaded(cityId: int, cityName: str, countryName: str, country
         eventCity = event.get("venueCity") or cityName
         eventCountry = event.get("venueCountry") or countryCode
 
-        venueUuid = _buildVenueUuid(name, eventCity, eventCountry)
-        if venueUuid in venuesByUuid:
+        venueUUID = _buildVenueUUID(name, eventCity, eventCountry)
+        if venueUUID in venuesByUUID:
             continue  # duplicate event at an already-seen venue
 
-        venuesByUuid[venueUuid] = {
-            "venueUuid": venueUuid,
+        venuesByUUID[venueUUID] = {
+            "venueUUID": venueUUID,
             "name": name,
             "cityId": cityId,
             "countryCode": countryCode,
@@ -73,7 +73,7 @@ def ensureCityVenuesLoaded(cityId: int, cityName: str, countryName: str, country
         }
 
     try:
-        venue_service.bulkSetVenues(list(venuesByUuid.values()))
+        venue_service.bulkSetVenues(list(venuesByUUID.values()))
         location_service.markCityVenuesLoaded(cityId)
         db.session.commit()
     except Exception:
@@ -81,7 +81,7 @@ def ensureCityVenuesLoaded(cityId: int, cityName: str, countryName: str, country
         raise
 
     # zero venues found is still a successful, cacheable outcome
-    return {"cached": False, "venuesLoaded": len(venuesByUuid)}
+    return {"cached": False, "venuesLoaded": len(venuesByUUID)}
 
 
 def calculateCapacityRange(localMonthlyListeners):
@@ -94,7 +94,7 @@ def calculateCapacityRange(localMonthlyListeners):
     return minCapacity, maxCapacity
 
 
-def findBestVenuesForArtist(artistUuid: str, cityId: int, limit=DEFAULT_RESULT_LIMIT):
+def findBestVenuesForArtist(artistUUID: str, cityId: int, limit=DEFAULT_RESULT_LIMIT):
     city = location_service.getCityById(cityId)
     if city is None:
         return {"statusCode": 404, "error": "City not found"}
@@ -107,7 +107,7 @@ def findBestVenuesForArtist(artistUuid: str, cityId: int, limit=DEFAULT_RESULT_L
         return loadResult
 
     localMonthlyListeners = artist_audience_repository.getLocalMonthlyListeners(
-        artistUuid, cityId
+        artistUUID, cityId
     )
     if isinstance(localMonthlyListeners, dict) and "error" in localMonthlyListeners:
         return localMonthlyListeners
@@ -137,7 +137,7 @@ def findBestVenuesForArtist(artistUuid: str, cityId: int, limit=DEFAULT_RESULT_L
         "expectedAttendance": round(expectedAttendance),
         "venues": [
             {
-                "venueUuid": v.venue_uuid,
+                "venueUUID": v.venue_UUID,
                 "name": v.name,
                 "capacity": int(v.capacity) if v.capacity else None,
                 "address": v.address,
