@@ -1,6 +1,8 @@
 Flask
 flask-cors
+flask-limiter
 soundcharts
 flask-sqlalchemy
 python-dotenv
 requests
+apify-client
