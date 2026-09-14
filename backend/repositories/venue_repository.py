@@ -1,15 +1,5 @@
-"""
-VENUE_REPOSITORY
-
-Coordinates the city venue cache (location_service), venue persistence
-(venue_service) and Parse ingestion (parse_service). On a cache hit, Parse is
-never called. On a cache miss, venues are fetched (already deduplicated by
-Parse's venue ids), stored, and the city is marked loaded - all in one
-transaction so a failure never leaves the city half-loaded.
-"""
-
 from backend import db
-from backend.services import venue_service, location_service, parse_service
+from backend.services import soundcharts_service, venue_service, location_service, parse_service
 from backend.repositories import artist_audience_repository
 
 MIN_ATTENDANCE_PCT = 0.01
@@ -138,7 +128,45 @@ def findBestVenuesForArtist(artistUUID: str, cityId: int, limit=DEFAULT_RESULT_L
                 "longitude": v.longitude,
                 "cityId": v.city_id,
                 "countryCode": v.country_code,
+                "imageUrl": findVenueImageURL(v.venue_id),
             }
             for v in ranked
         ],
     }
+
+def findVenueMetadataByName(venue_name: str):
+    try:
+        return soundcharts_service.getVenueMetadataByName(venue_name)
+    except Exception as error:
+        return {"statusCode": 500, "error": str(error)}
+
+def findVenueImageURL(venue_id: str):
+    venue = venue_service.getVenueByID(venue_id)
+    if venue is None:
+        return None
+
+    if venue.imageUrl:
+        return venue.imageUrl
+
+    city = location_service.getCityById(venue.city_id)
+    if city is None:
+        return None
+
+    payload = findVenueMetadataByName(venue.name)
+    if isinstance(payload, dict) and "error" in payload:
+        return None
+    if not payload:
+        return None
+
+    # we have to confirm that the image belongs to the correct venue based on city and country
+    for item in payload:
+        if (
+            item.get("imageUrl")
+            and item.get("cityName", "").strip().lower() == city.city_name.strip().lower()
+            and item.get("countryCode") == venue.country_code
+        ):
+            imageURL = item.get("imageUrl")
+            venue_service.setVenueImageURL(venue_id, imageURL)
+            return imageURL
+        
+    return None

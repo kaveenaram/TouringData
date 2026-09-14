@@ -2,10 +2,6 @@ from backend.api import sc
 from datetime import date
 import sys
 
-# please add in what to do with error codes
-
-
-
 class SoundchartsError(Exception):
     def __init__(self, status_code: int, message: str):
         self.status_code = status_code
@@ -125,14 +121,9 @@ def getLocalStreamingAudience(uuid: str):
         _handleError(error)
 
 
-
-def getCityKey(city: str, countryCode: str):
+def getVenueMetadataByName(venue_name: str):
     try:
-        print(f"[Soundcharts Service] Getting city key for {city}, {countryCode}")
-        return _getItems(
-            lambda: sc.referential.get_cities_for_venue_festival(countryCode, city)
-        )
+        print(f"[Soundcharts Service] Getting image URL for venue: {venue_name}")
+        return _getItems(lambda: sc.search.search_venue_by_name(venue_name))
     except SoundchartsError as error:
         _handleError(error)
-
-   

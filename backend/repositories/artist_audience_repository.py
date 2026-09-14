@@ -1,12 +1,3 @@
-"""
-ARTIST_AUDIENCE_REPOSITORY
-
-Coordinates communication between artist_audience_service, location_service, and soundcharts_service,
-to make sure that the database is checked for cache before calling the api for information specifically
-regarding the artist audience and local monthly listeners.
-
-"""
-
 # IMPORTS
 
 from backend.services import artist_audience_service, artist_service, location_service, soundcharts_service
