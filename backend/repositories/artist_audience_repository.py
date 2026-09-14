@@ -96,6 +96,7 @@ def selectCity(artist_uuid: str, cityId: int, platform="spotify"):
     if city_record is None:
         return None
 
+    """
     if city_record.cityKey is not None:
         return getArtistCityAudience(artist_uuid, cityId, platform)
 
@@ -129,7 +130,7 @@ def selectCity(artist_uuid: str, cityId: int, platform="spotify"):
         city_record.city_name,
         city_record.country_code,
         cityKey,
-    )
+    )"""
     return getArtistCityAudience(artist_uuid, cityId, platform)
 
 def getAllArtistCities(uuid: str):

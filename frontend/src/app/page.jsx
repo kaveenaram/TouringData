@@ -8,6 +8,10 @@ import DashboardHeader from "../../components/dashboard-header"
 import DashboardArtistInfo from "../../components/dashboard-artist-info"
 import DashboardCityInfo from "../../components/dashboard-city-info"
 import VenuePreview from "../../components/venue-preview"
+import Loading from "../../components/loading"
+import DashboardTouringInfo from "../../components/dashboard-touring-info"
+import VenueInfo from "../../components/venue-info"
+
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
@@ -22,6 +26,10 @@ export default function Home() {
   const [selectedArtist, setSelectedArtist] = useState(null)
   const [cities, setCities] = useState([])
   const [selectedCity, setSelectedCity] = useState(null)
+
+  const [venues, setVenues] = useState([])
+  const [venuesLoading, setVenuesLoading] = useState(false)
+  const [venuesError, setVenuesError] = useState("")
 
   const [citiesLoading, setCitiesLoading] = useState(false)
   const [citiesError, setCitiesError] = useState("")
@@ -202,6 +210,47 @@ export default function Home() {
     }
   }
 
+  // ==========================================
+  // LOAD VENUES
+  // ==========================================
+
+  async function loadVenues(artistuuid, cityId) {
+  setVenuesLoading(true)
+  setVenuesError("")
+  setVenues([])
+
+  try {
+    const response = await fetch(
+      `${API_URL}/venues/recommend?artist_id=${encodeURIComponent(
+        artistuuid
+      )}&city_id=${encodeURIComponent(cityId)}`
+    )
+
+    const text = await response.text()
+
+    let data
+
+    try {
+      data = JSON.parse(text)
+    } catch {
+      throw new Error("Could not load venues")
+    }
+
+    if (!response.ok) {
+      throw new Error(data?.error || "Could not load venues")
+    }
+
+    setVenues(data.venues || [])
+
+  } catch (err) {
+    console.error("Venue loading error:", err)
+
+    setVenues([])
+    setVenuesError("No recommended venues available.")
+  } finally {
+    setVenuesLoading(false)
+  }
+}
 
   // ==========================================
   // SELECT CITY
@@ -209,6 +258,9 @@ export default function Home() {
 
   async function handleCitySelect(city) {
     setSelectedCity(null)
+    setVenues([])
+    setVenuesError("")
+
     if (!selectedArtist) {
       return
     }
@@ -238,6 +290,7 @@ export default function Home() {
       }
 
       setSelectedCity(audienceData)
+      loadVenues(selectedArtist.uuid, city.cityId)
 
     } catch (err) {
       console.error("City audience error:", err)
@@ -254,6 +307,7 @@ export default function Home() {
     }
   }
 
+  
 
   // ==========================================
   // BACK TO SEARCH
@@ -264,13 +318,17 @@ export default function Home() {
     setCities([])
     setSelectedCity(null)
 
+    setVenues([])
+    setVenuesLoading(false)
+    setVenuesError("")
+
     setCitiesLoading(false)
     setCitiesError("")
 
     setError("")
     setArtists([])
     setQuery("")
-  }
+  } 
 
 
   // ==========================================
@@ -424,7 +482,34 @@ export default function Home() {
                 city={selectedCity}
               />
 
-              <VenuePreview />
+              {/* VENUES */}
+
+               
+              <section className="venue-section">
+
+                {venuesLoading && (
+                  <Loading />
+                )}
+
+                {!venuesLoading && venuesError && (
+                  <p className="app__info">
+                    {venuesError}
+                  </p>
+                )}
+
+                {!venuesLoading && !venuesError && venues.length > 0 && (
+                  <div className="venue-grid">
+                    {venues.map((venue) => (
+                      <VenueInfo
+                        key={venue.venueID}
+                        venue={venue}
+                        cityName={selectedCity.name}
+                      />
+                    ))}
+                  </div>
+                )}
+
+              </section>
             </>
           )}
 
