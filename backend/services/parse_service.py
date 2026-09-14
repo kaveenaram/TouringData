@@ -1,11 +1,3 @@
-"""
-PARSE_SERVICE
-
-Sole responsibility: call the Parse-hosted venue search endpoint and return
-raw venue records. No database access and no dedup/business logic here -
-that lives in venue_repository / venue_service.
-"""
-
 import os
 import requests
 

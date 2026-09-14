@@ -62,7 +62,7 @@ from backend import app, init_db
     print("byeeeee")
 """
 
-"""
+
 def testVenueRecommendations():
     # Interactive CLI to exercise the venue cache/recommendation flow end-to-end.
     available_artists = []
@@ -121,7 +121,13 @@ def testVenueRecommendations():
         for i, v in enumerate(result["venues"]):
             print(f"{i + 1}. {v['name']} - capacity {v['capacity']} "
                   f"({v['address'] or 'address unknown'}, {v['region'] or ''})")
-"""
+
+        # print all information from the venue table about the selected venues
+        for i, v in enumerate(result["venues"]):
+            print(f"\nVenue {i + 1}:")
+            for key, value in v.items():
+                print(f"{key}: {value}")
+
 
 
 def displayTorontoVenues():
@@ -148,7 +154,7 @@ def displayTorontoVenues():
 def main():
     init_db()
     with app.app_context():
-        displayTorontoVenues()
+        testVenueRecommendations()
 
     print("byeeeee")
 

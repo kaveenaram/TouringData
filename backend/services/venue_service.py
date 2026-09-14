@@ -20,8 +20,7 @@ def getVenuesByCityAndCapacity(cityId: int, minCapacity: int, maxCapacity: int):
     )
 
 def setVenue(venueID, name, cityId, countryCode, capacity, address=None,
-                 region=None, postalCode=None, latitude=None, longitude=None,
-                 imageUrl=None, type=None, websiteUrl=None):
+                 region=None, postalCode=None, latitude=None, longitude=None):
     venue = getVenueByID(venueID)
 
     if venue is None:
@@ -37,9 +36,6 @@ def setVenue(venueID, name, cityId, countryCode, capacity, address=None,
     venue.postal_code = postalCode
     venue.latitude = latitude
     venue.longitude = longitude
-    venue.imageUrl = imageUrl
-    venue.type = type
-    venue.websiteUrl = websiteUrl
 
     return venue
 
@@ -47,3 +43,11 @@ def bulkSetVenues(venues: list):
     saved = [setVenue(**v) for v in venues]
     db.session.flush()
     return saved
+
+def setVenueImageURL(venueID: str, imageUrl: str):
+    venue = getVenueByID(venueID)
+    if venue is None:
+        return None
+    venue.imageUrl = imageUrl
+    db.session.commit()
+    return venue
