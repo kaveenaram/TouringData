@@ -624,88 +624,93 @@ h3 {
    ========================================== */
 
 .venue-preview {
-  margin-top: 60px;
-
-  padding: 40px 32px;
-
-  border: 2px dashed var(--border);
-
-  border-radius: 12px;
-
-  background: var(--subtle);
+  width: 100%;
+  max-width: 650px;
+  margin: 70px auto 0;
+  padding: 0 20px;
 
   text-align: center;
-
-  animation: fadeIn 0.4s ease-in 0.3s both;
 }
 
 .venue-preview__placeholder {
   margin: 0;
 
   color: var(--muted);
-
-  font-size: 1.05rem;
+  font-size: 1rem;
+  line-height: 1.7;
 }
-
-
-/* ==========================================
-   TOURING INFORMATION
-   ========================================== */
+/* TOURING INFORMATION */
 
 .dashboard-touring-info {
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  gap: 18px;
+  gap: 28px;
 
   width: 100%;
 
   margin: 30px auto 20px;
 
   text-align: center;
-
-  animation: fadeIn 0.4s ease-in 0.2s both;
 }
 
-.dashboard-touring-info__expected-attendance {
+.dashboard-touring-info__section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.dashboard-touring-info__label {
   margin: 0;
 
-  font-size: 1.25rem;
+  font-size: 1.15rem;
+  color: var(--muted);
+  font-weight: 500;
 
+  letter-spacing: 0.01em;
+}
+
+.dashboard-touring-info__value {
+  margin: 0;
+
+  font-size: clamp(2rem, 6vw, 2.8rem);
   font-weight: 600;
 
-  text-align: center;
+  line-height: 1.2;
 }
 
 .dashboard-touring-info__range {
-  margin-left: 8px;
-
-  color: var(--muted);
+  margin: 0;
 
   font-size: 1rem;
-
   font-style: italic;
+
+  color: var(--muted);
 }
 
 .dashboard-touring-info__information {
   max-width: 650px;
 
-  margin: 0 auto;
+  margin: 0;
+
+  font-size: 1rem;
+  line-height: 1.7;
 
   color: var(--muted);
 
-  font-size: 1rem;
-
-  line-height: 1.7;
-
   text-align: center;
+}
+
+.dashboard-touring-info__information a {
+  color: var(--foreground);
 }
 
 .dashboard-touring-info__information a:hover {
   color: var(--accent);
 }
-
 
 /* ==========================================
    VENUE SECTION
@@ -720,25 +725,19 @@ h3 {
 }
 
 .venue-grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
   gap: 55px;
-
-  width: 100%;
-
-  margin: 40px auto 0;
-
-  text-align: center;
 }
 
 .venue-info {
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
+
+  width: 220px;
 
   text-align: center;
 }
@@ -795,7 +794,7 @@ h3 {
   font-size: 0.95rem;
 
   color: var(--muted);
-  
+
   text-align: center;
 }
 

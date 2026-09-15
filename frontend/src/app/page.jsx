@@ -13,6 +13,7 @@ import DashboardTouringInfo from "../../components/dashboard-touring-info"
 import VenueInfo from "../../components/venue-info"
 
 
+
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
 
@@ -517,16 +518,28 @@ export default function Home() {
                   </p>
                 )}
 
-                {!venuesLoading && !venuesError && venues.length > 0 && (
-                  <div className="venue-grid">
-                    {venues.map((venue) => (
-                      <VenueInfo
-                        key={venue.venueID}
-                        venue={venue}
-                        cityName={selectedCity.cityName}
+                {!venuesLoading && !venuesError && touringInfo && (
+                  <>
+                    {touringInfo.expectedAttendance < 10 ? (
+                      <VenuePreview
+                        expectedAttendance={touringInfo.expectedAttendance}
                       />
-                    ))}
-                  </div>
+                    ) : venues.length > 0 ? (
+                      <div className="venue-grid">
+                        {venues.map((venue) => (
+                          <VenueInfo
+                            key={venue.venueID}
+                            venue={venue}
+                            cityName={selectedCity.cityName}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <VenuePreview
+                        expectedAttendance={touringInfo.expectedAttendance}
+                      />
+                    )}
+                  </>
                 )}
 
               </section>

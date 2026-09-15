@@ -10,19 +10,21 @@ export default function DashboardTouringInfo({
   maxCapacity,
 }) {
   return (
-    <div className="dashboard-touring-info">
+    <section className="dashboard-touring-info">
 
-      <div className="dashboard-touring-info__expected-attendance">
-        EXPECTED ATTENDANCE:{" "}
-        {Number(expectedAttendance).toLocaleString()}
-      </div>
+      <div className="dashboard-touring-info__section">
+        <p className="dashboard-touring-info__label">
+          Expected attendance
+        </p>
 
-      <div className="dashboard-touring-info__range">
-        (
-        {Number(minCapacity).toLocaleString()}
-        {"–"}
-        {Number(maxCapacity).toLocaleString()}
-        )
+        <p className="dashboard-touring-info__value">
+          {Number(expectedAttendance).toLocaleString()}
+        </p>
+
+        <p className="dashboard-touring-info__range">
+          ({Number(minCapacity).toLocaleString()}–
+          {Number(maxCapacity).toLocaleString()})
+        </p>
       </div>
 
       <p className="dashboard-touring-info__information">
@@ -38,6 +40,6 @@ export default function DashboardTouringInfo({
         of local monthly listeners.
       </p>
 
-    </div>
-  );
+    </section>
+  )
 }
