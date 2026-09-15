@@ -23,29 +23,38 @@
 // in this order: image, then below name in bold, then below address, cityname, region, postal code, then below capacity
 
 export default function VenueInfo({ venue, cityName }) {
+  const addressParts = [
+    venue.address,
+    cityName,
+    venue.region,
+    venue.postalCode,
+  ].filter(Boolean);
+
   return (
-    <div>
+    <article className="venue-info">
+
       <img
         src={venue.imageUrl}
         alt={venue.name}
-        style={{
-          width: "100%",
-          height: "auto",
-        }}
+        className="venue-info__image"
       />
 
-      <div style={{ fontWeight: "bold" }}>
+      <h3 className="venue-info__name">
         {venue.name}
-      </div>
+      </h3>
 
-      <div>
-        {venue.address}, {cityName}, {venue.region},{" "}
-        {venue.postalCode}
-      </div>
+      <p className="venue-info__address">
+        {addressParts.join(", ")}
+      </p>
 
-      <div>
-        Capacity: {venue.capacity}
-      </div>
-    </div>
-  )
+      <p className="venue-info__capacity">
+        Capacity:{" "}
+        {venue.capacity
+          ? Number(venue.capacity).toLocaleString()
+          : "N/A"}
+      </p>
+
+    </article>
+  );
 }
+

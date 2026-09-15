@@ -154,7 +154,7 @@ def displayTorontoVenues():
 def main():
     init_db()
     with app.app_context():
-        testVenueRecommendations()
+        displayTorontoVenues()
 
     print("byeeeee")
 
