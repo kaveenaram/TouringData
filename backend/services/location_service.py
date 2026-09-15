@@ -45,12 +45,16 @@ def setCity(city_name: str, country_code: str):
 
         return city
 
+"""
+
 def setCityKey(city_name: str, country_code: str, cityKey: str):
         city = setCity(city_name, country_code)
         if city.cityKey != cityKey:
             city.cityKey = cityKey
             db.session.flush()
         return city
+
+"""
 
 # GETTERS
 
@@ -61,12 +65,13 @@ def getCityById(cityId: int):
 def getCountryByCode(country_code: str):
         return Country.query.filter_by(country_code=country_code).first()
 
-
+"""
 def getCityByCityKey(cityKey: str):
         city = City.query.filter_by(cityKey=cityKey).first()
         if city is None:
             return None, None
         return city.city_name, city.country_code
+"""
 
 
 def getCityByNameAndCountryCode(city_name: str, country_code: str):

@@ -2,8 +2,8 @@ from backend import db
 from backend.services import soundcharts_service, venue_service, location_service, parse_service
 from backend.repositories import artist_audience_repository
 
-MIN_ATTENDANCE_PCT = 0.01
-MAX_ATTENDANCE_PCT = 0.03
+MIN_ATTENDANCE_PCT = 0.02
+MAX_ATTENDANCE_PCT = 0.04
 DEFAULT_RESULT_LIMIT = 3
 
 # floor to drop unpublished/junk capacities (e.g. "capacity: 1") at ingestion time
