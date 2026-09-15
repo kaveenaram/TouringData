@@ -3,7 +3,7 @@ export default function DashboardCityInfo({ artist, city }) {
     <div className="dashboard-city-info">
       <div className="dashboard-city-info__section">
         <p className="dashboard-city-info__label">
-          Monthly listener count
+          monthly listener count
         </p>
         <p className="dashboard-city-info__value">
             {formatNumber(artist.monthlyListeners)}
@@ -12,7 +12,7 @@ export default function DashboardCityInfo({ artist, city }) {
 
       <div className="dashboard-city-info__section">
         <p className="dashboard-city-info__label">
-          Monthly listener count in {city.cityName}, {city.countryCode}
+          monthly listener count in {city.cityName}, {city.countryCode}
         </p>
         <p className="dashboard-city-info__value">
             {formatNumber(city.localMonthlyListeners)}

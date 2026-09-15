@@ -14,7 +14,7 @@ export default function DashboardTouringInfo({
 
       <div className="dashboard-touring-info__section">
         <p className="dashboard-touring-info__label">
-          Expected attendance
+          expected attendance
         </p>
 
         <p className="dashboard-touring-info__value">
@@ -28,7 +28,7 @@ export default function DashboardTouringInfo({
       </div>
 
       <p className="dashboard-touring-info__information">
-        This is the expected attendance range for the artist in this city
+        this is the expected attendance range for the artist in this city
         based on a range of{" "}
         <a
           href="https://orphiq.com/resources/spotify-analytics-tour-routing"

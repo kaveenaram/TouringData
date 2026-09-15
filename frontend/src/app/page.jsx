@@ -455,7 +455,7 @@ export default function Home() {
 
               {selectedCity && (
                 <p className="app__city-prompt">
-                  Want to look for another city for this artist?
+                  want to look for another city for this artist?
                 </p>
               )}
 
@@ -465,8 +465,8 @@ export default function Home() {
                 disabled={loading}
                 label={
                   selectedCity
-                    ? "Select another city"
-                    : "Select a city"
+                    ? "select another city"
+                    : "select a city"
                 }
               />
 
@@ -482,7 +482,7 @@ export default function Home() {
             cities.length === 0 &&
             citiesError && (
               <p className="app__info">
-                No specific city data available.
+                no specific city data available.
               </p>
           )}
 

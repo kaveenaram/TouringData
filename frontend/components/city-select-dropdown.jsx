@@ -23,7 +23,7 @@ export default function CitySelectDropdown({
         className="city-select__dropdown"
       >
         <option value="" disabled>
-          Choose a city
+          choose a city
         </option>
 
         {cities.map((city) => (

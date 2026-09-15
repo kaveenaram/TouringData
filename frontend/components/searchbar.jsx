@@ -57,13 +57,13 @@ export default function SearchBar({ onArtistSelect }) {
         <input
           type="search"
           value={query}
-          placeholder="Search for an artist"
+          placeholder="search for an artist"
           onChange={(event) => setQuery(event.target.value)}
-          aria-label="Search for an artist"
+          aria-label="search for an artist"
         />
       </form>
 
-      {loading && <p className="search-status">Searching...</p>}
+      {loading && <p className="search-status">searching...</p>}
       {error && <p className="search-error">{error}</p>}
 
       {artists.length > 0 && (

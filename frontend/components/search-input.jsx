@@ -7,9 +7,9 @@ export default function SearchInput({ value, onChange, onSubmit, loading }) {
         type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search for an artist"
+        placeholder="search for an artist"
         disabled={loading}
-        aria-label="Search for an artist"
+        aria-label="search for an artist"
       />
     </form>
   )

@@ -48,7 +48,7 @@ export default function VenueInfo({ venue, cityName }) {
       </p>
 
       <p className="venue-info__capacity">
-        Capacity:{" "}
+        capacity:{" "}
         {venue.capacity
           ? Number(venue.capacity).toLocaleString()
           : "N/A"}

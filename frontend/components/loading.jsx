@@ -1,7 +1,7 @@
 // sometimes loading new cities and finding the venues might take a little bit so we need a cute loading text, like "Loading..." to display
 // i want the loading text to be centered and styled nicely and to have each character jump or animate individually!
 export default function Loading() {
-    const loadingText = "Loading...";
+    const loadingText = "loading...";
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '2rem', fontWeight: 'bold' }}>
             {loadingText.split("").map((char, index) => (
