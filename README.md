@@ -41,7 +41,7 @@ the frontend communicates with the backend through the api.
 
 ### backend
 
-the backend is built with python, flask, and sqlalchemy. it handles the data processing, api routes, database access, and external api integrations.
+the backend is built with python, flask, and sqlalchemy. it handles the data processing, api routes, database access and caching, and external api integrations.
 
 the backend is organized into a few main areas:
 
@@ -76,6 +76,11 @@ venue data is dependent on the external data sources.
 venue recommendations outside of toronto have not been thoroughly tested.
 api usage is limited by available credits.
 some edge cases with very small audiences may require further testing.
+
+## next steps
+
+- create a ML venue recommendation algorithm
+- rework the collection of artist local monthly listener data for the recommendation algorithm while still preserving cache
 
 ## running the project
 
