@@ -79,13 +79,15 @@ some edge cases with very small audiences may require further testing.
 
 ## next steps
 
+- complete testing
 - create a ML venue recommendation algorithm
 - rework the collection of artist local monthly listener data for the recommendation algorithm while still preserving cache
+- move completed application into main branch
 
 ## running the project
 
-download from the development branch
-install docker
-navigate to main folder TouringData
-docker compose up
+- download from the development branch
+- install docker
+- navigate to main folder TouringData
+- docker compose up
 
